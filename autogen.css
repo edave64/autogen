@@ -1,0 +1,8 @@
+* { margin:0; padding:0 }
+html, body { display: table; padding: 4px; width:100%; height: 100%; text-align:center }
+#wrapper { display: table-row; }
+#proverb-bar { display: table-cell; vertical-align: middle }
+#proverb-placement { font-size: 28pt }
+#button_next { float: right; margin-right: 30px; font-size: 28pt; cursor: pointer; background: #fff; border: 0; }
+
+#footnotes { display: table-row; text-align: left; height: 0; }
