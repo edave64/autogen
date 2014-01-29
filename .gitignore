@@ -1,0 +1,6 @@
+/.htaccess
+/*.cssgz
+/*.jsgz
+/index.htmlgz
+/dictionary/*.jsgz
+/.idea
