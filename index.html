@@ -9,15 +9,17 @@
     <body onload="AutoGen.initUI();">
         <br />
         <div id="wrapper">
-            <div id="proverb-bar">
+            <div id="gen_bar">
                 <button id="button_next" title="Nächstes Sprichwort [Enter]">▶</button>
-                <p id="proverb-placement">Javascript deaktiviert zu haben ist aller Laster anfang.</p>
+                <p id="gen_placement">Javascript deaktiviert zu haben ist aller Laster anfang.</p>
             </div>
         </div>
         <br />
         <p id="footnotes">
-            AutoGen 0.2 - Sprichwortrekombinator 2014-01<br />
-            (AutoGen) 2011-2014 by EDave, released to the public domain<br />
+            AutoGen 0.5<br />
+            (AutoGen) 2011-2014 by EDave, released to the public domain
+        </p>
+        <p id="footnotes_dictionary">
             (Sprichwortrekombinator) released under
             <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.de">Creative Commons
                 Attribution/Share-Alike</a><br />
@@ -25,8 +27,12 @@
             Inspiriert durch <a href="http://sprichwortrekombinator.de">sprichwortrekombinator.de</a><br />
             Vorschläge und Fredrick Freekowtski's E-Mail-Addresse bitte an: spam-catcher[at]xcvbnm[punkt]org
         </p>
+        <script type="application/javascript" src="optoparse.js"></script>
         <script type="application/javascript" src="autogen.js"></script>
-        <!-- get the documented file at /autoGen.uncompressed.js -->
-        <script type="application/javascript" src="dictionary/sprichwortrekombinator.js"></script>
+        <script type="application/javascript">
+            document.write('<' + 'script type="application/javascript" src="dictionary/' +
+                    (Opts.getObj()['dict'] || 'sprichwortrekombinator') +
+                    '.js">' + '<' + '/script>');
+        </script>
     </body>
 </html>

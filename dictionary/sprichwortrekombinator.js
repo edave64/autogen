@@ -11,6 +11,18 @@
             return location.search.slice(1).split('&').indexOf(name) !== -1;
         };
 
+    dict.options = {
+        name: 'Sprichwortrekombinator',
+        version: '2014-02',
+        licence: {
+            copyright: '2014 by EDave',
+            licence: 'released under <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.de">Creative Commons Attribution/Share-Alike</a>',
+            inspiredBy: '<a href="http://sprichwortrekombinator.de">sprichwortrekombinator.de</a>'
+        },
+        additional: 'Sprichwörter von <a href="http://de.wikiquote.org/Deutsche_Sprichwörter">Wikiquote</a><br />' +
+            'Vorschläge und Fredrick Freekowtski\'s E-Mail-Addresse bitte an: spam-catcher[at]xcvbnm[punkt]org'
+    };
+
     if (!arg('no-singular')) {
         dict.rules.push(['Singular1', ' ', 'Singular2', '.']);
         dict.Singular1 = [];
@@ -120,12 +132,40 @@
             ['Was nicht ist', 'kann noch werden'],
             ['Wer den Teufel reinlegen will', 'muss früh aufstehen'],
             [/*das*/ undefined, 'schlägt dem Fass den Boden aus'],
-            ['Wer nicht wagt', /* der nicht gewinnt */ undefined]
+            ['Wer nicht wagt', /* der nicht gewinnt */ undefined],
+            ['Dummheit', 'tut weh'],
+            ['Einbildung', 'ist auch eine Bildung'],
+            ['Geiz', 'ist die größte Armut'],
+            ['Geld allein', 'macht nicht glücklich'],
+            ['Heiter', 'kommt weiter'],
+            ['Heute', 'ist die beste Zeit'],
+            ['Jeder', 'kehrt vor seiner eigenen Tür'],
+            ['Kein Rauch', 'ohne Feuer'],
+            ['Liebe', 'macht blind'],
+            ['Neid', 'ist die ehrlichste Form der Anerkennung'],
+            ['Schlaf', 'ist die beste Medizin'],
+            ['Viel', 'hilft viel'],
+            ['Wahltag', 'ist Zahltag'],
+            ['Wer nichts wird', 'wird Wirt'],
+            ['Wer flüstert', 'lügt'],
+            ['Wissen', 'ist Macht'],
+            ['Dankbarkeit', 'kostet nichts'],
+            ['Das Auge', 'isst mit'],
+            ['Dein Schicksal', 'bestimmt dein Leben'],
+            ['Der Knochen', 'kommt nicht zum Hund'],
+            ['Einmal', 'ist keinmal'],
+            ['Die Kuh', 'macht Muh'],
+            ['Faulheit', 'ist die Triebfeder des Fortschritts'],
+            ['Geben', 'ist besser als nehmen'],
+            ['Geiz', 'ist geil']
         );
+        /* Bild bildet */
+        /* Der Lauscher an der Wand hört nur die eigene Schand */
 
         if (arg('questionalble')) {
             AutoGen.pushMethod('Singular1', 'Singular2')(
-                ['Arbeit', 'adelt'] /* Nazi verbindung */
+                ['Arbeit', 'adelt'], /* Nazi verbindung */
+                ['Stadtluft', 'macht frei'] /* könnte zu "Arbeit macht frei" führen */
             );
         }
     }
@@ -158,7 +198,13 @@
             ['Totgesagte', 'leben länger'],
             ['Vögel, die am Morgen singen', 'holt am Mittag die Katz'],
             ['Viele Köche', 'verderben den Brei'],
-            ['Viele Jäger', 'sind des Hasen Tod']
+            ['Viele Jäger', 'sind des Hasen Tod'],
+            ['Die Ratten', 'verlassen das sinkende Schiff'],
+            ['Gottes Mühlen', 'mahlen langsam'],
+            ['Neun Leben', 'hat die Katze'],
+            ['Reisende', 'soll man nicht aufhalten'],
+            ['Träume', 'sind Schäume'],
+            ['Versesslichkeit und Faulheit', 'sind Geschwisterkinder']
         );
     }
 
@@ -183,14 +229,20 @@
             ['Vor Gott', 'sind alle Menschen gleich'],
             ['In der Not', 'frisst der Teufel fliegen'],
             ['Wo gehobelt wird', 'fallen Spähne'],
-            ['Auch in einer alten Kirche', 'kann man eine schöne Messe lesen']
+            ['Auch in einer alten Kirche', 'kann man eine schöne Messe lesen'],
+            ['Fünf Minuten vor der Zeit', 'ist des Soldaten Pünklichkeit'],
+            ['Hinterher', 'ist man immer klüger'],
+            ['In der Nacht', 'sind alle Katzen grau'],
+            ['In der Kürze', 'liegt die Würze'],
+            ['Ist die Katze aus Haus', 'tanzen die Mäuse auf dem Tisch']
         );
 
         if (arg('questionalble')) {
-            AutoGen.pushMethod('Plural1', 'Plural2')(
+            AutoGen.pushMethod('At1', 'At2')(
                 /* Oft mit Sex assoziiert */
                 ['Auf alten Pferden', 'lernt man reiten'],
-                ['Auf alten Pfannen', 'lernt man kochen']
+                ['Auf alten Pfannen', 'lernt man kochen'],
+                ['Auf alten Schiffen', 'lernt man segeln']
             );
         }
     }
@@ -203,7 +255,10 @@
             ['Besser arm dran', 'als Arm ab'],
             ['Besser den Spatz in der Hand', 'als die Taube auf dem Dach'],
             ['Besser ein Ende mit Schrecken', 'als ein Schrecken ohne Ende'],
-            ['Besser spät', 'als nie']
+            ['Besser spät', 'als nie'],
+            ['Das Hemd ist mir näher', 'als der Rock'],
+            ['Das Gerücht ist immer größer', 'als die Wahrheit'],
+            ['Das Kücken will klüger sein', 'als die Henne']
         );
     }
 
@@ -219,11 +274,14 @@
             ['Der Mensch denkt', 'Gott lenkt'],
             ['Ende gut', 'alles gut'],
             ['Klappe zu', 'Affe tot'],
-            ['Trautes Heim', 'Glück allein']
+            ['Trautes Heim', 'Glück allein'],
+            ['Pech im Spiel', 'Glück in der Liebe']
         );
     }
     /* Einem nackten Mann kann man nicht in die Taschen greifen */
     /* dem Glücklichen schlägt keine Stunde */
     /* Einem Geschenkten Gaul schaut man nicht ins Maul */
     /* Vorfreude ist die schönste Freude */
+
+    AutoGen.balanceRules();
 }());

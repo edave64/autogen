@@ -46,16 +46,7 @@ window.AutoGen = (function () {
     "use strict";
 
     // Picks a random element from the array
-    var pick = function (ary, keys) {
-            var key = Math.round((ary.length - 1) * Math.random()), i = 0;
-            do {
-                key = Math.round((ary.length - 1) * Math.random());
-            } while ((i += 1) < 10 && keys.indexOf(key) !== -1);
-            if (keys) {
-                keys.push(key);
-            }
-            return ary[key];
-        },
+    var pick,
         each = function (ary, iter) {
             [].every.call(ary, function (k, v, a) {
                 iter(k, v, a);
@@ -106,14 +97,15 @@ window.AutoGen = (function () {
             },
 
             initUI: function () {
-                var p = document.getElementById("proverb-placement"),
+                var p = document.getElementById("gen_placement"),
+                    footer = document.getElementById("footnotes_dictionary"),
                     newSentence = function () {
                         p.innerHTML = self.gen();
                     },
                     loadSentence = function () {
                         var keys = location.hash.slice(1).split('&'),
                             dict = self.dictionary,
-                            rules = dict.rules[keys[0]],
+                            rules = dict.rules instanceof self.WeigthedArray ? dict.rules.ary[keys[0]] : dict.rules[keys[0]],
                             sentence = '',
                             i = 0;
 
@@ -122,13 +114,19 @@ window.AutoGen = (function () {
                             return true;
                         });
                         p.innerHTML = sentence;
-                    };
+                    },
+                    opts = self.dictionary.options;
 
                 document.body.addEventListener("keypress", function (e) {
                     if (e.keyCode === 13) {
                         newSentence();
                     }
                 });
+
+                footer.innerHTML = '(' + opts.name + ' ' + opts.version + ') ' + opts.licence.copyright + ' ' +
+                    opts.licence.licence + '<br />';
+                footer.innerHTML += 'Inspired by ' + opts.licence.inspiredBy + '<br />';
+                footer.innerHTML += opts.additional;
 
                 window.addEventListener('popstate', function () {
                     loadSentence();
@@ -146,8 +144,151 @@ window.AutoGen = (function () {
                 } else {
                     loadSentence();
                 }
+            },
+
+            WeigthedArray: function () {
+                this.ary = [];
+                this.weights = {};
+                this.weightSum = 0;
+            },
+
+            balanceRules: function () {
+                this.dictionary.rules = this.dictionary.rules.reduce(function (obj, rules) {
+                    var possibilities = 1;
+
+                    each(rules, function (rule) {
+                        if (self.dictionary[rule]) {
+                            possibilities *= self.dictionary[rule].length;
+                        }
+                    });
+                    obj.pushWithWeight(rules, possibilities);
+                    return obj;
+                }, new self.WeigthedArray());
             }
+        },
+        WeigthedArray = self.WeigthedArray,
+        pWeigthedArray = WeigthedArray.prototype,
+        pArray = Array.prototype,
+        id = 0,
+        getID = function (obj) {
+            /*jslint nomen: true */
+            if (typeof obj === 'object') {
+                if (obj.__uniqueid === undefined) {
+                    obj.__uniqueid = id += 1;
+                }
+                return 'O' + obj.__uniqueid;
+            }
+
+            /*jslint nomen: false */
+            return (typeof obj) + obj.toString();
+        },
+        wrapAdd = function (oldMethod) {
+            return function () {
+                var self = this;
+                oldMethod.apply(this.ary, arguments);
+                pArray.every.call(arguments, function (val) {
+                    if (self.weights[getID(val)] === undefined) {
+                        self.weights[getID(val)] = 1;
+                        self.weightSum += 1;
+                    }
+                });
+                return true;
+            };
+        },
+        wrapRemove = function (oldMethod) {
+            return function () {
+                var self = this;
+                oldMethod.apply(this.ary, arguments);
+                pArray.every.call(arguments, function (val) {
+                    if (self.weights[getID(val)] !== undefined) {
+                        self.weightSum -= self.weights[getID(val)];
+                        delete self.weights[getID(val)];
+                    }
+                    return true;
+                });
+            };
+        },
+        wrapSubset = function (oldMethod) {
+            return function () {
+                var subAry = oldMethod.apply(this.ary, arguments),
+                    self = this,
+                    newWeigthed = new WeigthedArray();
+                newWeigthed.ary = subAry;
+                subAry.every(function (val) {
+                    if (self.weights[getID(val)] !== undefined) {
+                        newWeigthed.weights[getID(val)] = self.weights[getID(val)];
+                    } else {
+                        newWeigthed.weights[getID(val)] = 1;
+                    }
+                    newWeigthed.weightSum += newWeigthed.weights[getID(val)];
+                });
+            };
         };
+
+    pick = function (ary, keys) {
+        var key, i = 0;
+        if (ary instanceof self.WeigthedArray) {
+            do {
+                key = ary.pick();
+            } while ((i += 1) < 10 && keys.indexOf(key) !== -1);
+        } else {
+            do {
+                key = Math.round((ary.length - 1) * Math.random());
+            } while ((i += 1) < 10 && keys.indexOf(key) !== -1);
+        }
+        if (keys) {
+            keys.push(key);
+        }
+        if (ary instanceof self.WeigthedArray) {
+            return ary.ary[key];
+        }
+        return ary[key];
+    };
+
+    pWeigthedArray.push = wrapAdd(pArray.push);
+    pWeigthedArray.unshift = wrapAdd(pArray.unshift);
+    pWeigthedArray.concat = function () {
+        pArray.every.call(arguments, function (val) {
+            if (val instanceof Array) {
+                this.push.apply(this, val);
+            } else {
+                this.push(val);
+            }
+        });
+    };
+    pWeigthedArray.shift = wrapRemove(pArray.shift);
+    pWeigthedArray.pop = wrapRemove(pArray.pop);
+    pWeigthedArray.filter = wrapSubset(pArray.filter);
+    pWeigthedArray.pick = function () {
+        var randIndex = Math.random() * this.weightSum,
+            id;
+        for (id in this.weights) {
+            if (this.weights.hasOwnProperty(id)) {
+                randIndex -= this.weights[id];
+                if (randIndex <= 0) {
+                    return this.indexById(id);
+                }
+            }
+        }
+        return null;
+    };
+    pWeigthedArray.indexById = function (id) {
+        var obj, key;
+        for (key in this.ary) {
+            if (this.ary.hasOwnProperty(key)) {
+                obj = this.ary[key];
+                if (getID(obj) === id) {
+                    return key;
+                }
+            }
+        }
+        return null;
+    };
+    pWeigthedArray.pushWithWeight = function (element, weight) {
+        this.ary.push(element);
+        this.weights[getID(element)] = weight;
+        this.weightSum += weight;
+    };
 
     return self;
 }());
