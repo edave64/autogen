@@ -3,7 +3,7 @@
 Autogen is a random sentence generator. It gets a dictionary with words and a simple grammar and builds a sentence out
 of it.
 
-##Example
+## Example
 ### Rule
 
     Autogen.dictionary.rules.push(['The ', 'Noun', ' ', 'Verb', ' the ', 'Adjective', ' ', 'Noun']);
