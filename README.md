@@ -19,7 +19,7 @@ To fill the dictionary, you add array to Autogen.dictionary.
 
     Autogen.dictionary.Noun = ['cat', 'internet', 'blog']
     Autogen.dictionary.Verb = ['eats', 'destroyes', 'celebrates']
-    Autogen.dictionary.Verb = ['red', 'lazy', 'happy']
+    Autogen.dictionary.Adjective = ['red', 'lazy', 'happy']
 
 ### Output
 Running Autogen.gen() on the current example might output one of the following sentence:
