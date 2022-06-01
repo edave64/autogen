@@ -19,8 +19,7 @@
             licence: 'released under <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.de">Creative Commons Attribution/Share-Alike</a>',
             inspiredBy: '<a href="http://sprichwortrekombinator.de">sprichwortrekombinator.de</a>'
         },
-        additional: 'Sprichwörter von <a href="http://de.wikiquote.org/Deutsche_Sprichwörter">Wikiquote</a><br />' +
-            'Vorschläge und Fredrick Freekowtski\'s E-Mail-Addresse bitte an: spam-catcher[at]xcvbnm[punkt]org'
+        additional: 'Sprichwörter von <a href="http://de.wikiquote.org/Deutsche_Sprichwörter">Wikiquote</a>'
     };
 
     if (!arg('no-singular')) {
