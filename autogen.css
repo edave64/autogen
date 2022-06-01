@@ -13,4 +13,7 @@ html, body { display: table; padding: 4px; width:100%; height: 100%; text-align:
     background: #1b1b1b;
     color: white;
   }
+  
+  a:link { color: #c8c8ff; }
+  a:visted { color: #ffc8ff; }
 }
