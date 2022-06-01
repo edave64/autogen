@@ -1,9 +1,16 @@
 * { margin:0; padding:0 }
-html, body { display: table; padding: 4px; width:100%; height: 100%; text-align:center; overflow: hidden }
-#wrapper { display: table-row; }
+html, body { display: table; padding: 4px; width:100%; height: 100%; text-align:center; overflow: hidden; box-sizing: border-box; }
+#wrapper { display: table-row; height: 100%; }
 #gen_bar { display: table-cell; vertical-align: middle }
 #gen_placement { font-size: 28pt }
 #button_next { float: right; margin-right: 30px; font-size: 28pt; cursor: pointer; background: #fff; border: 0; }
 
 #footnotes { display: table-row; height: 0; padding: 4px; text-align: left;}
-#footnotes_dictionary { display: table-row; height: 0; padding: 4px; text-align: left;}
+#footnotes_dictionary { display: table-row; height: 0; padding: 4px; text-align: left; }
+
+@media (prefers-color-scheme: dark) {
+  html, #button_next {
+    background: #1b1b1b;
+    color: white;
+  }
+}
